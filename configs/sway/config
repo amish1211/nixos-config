@@ -1,0 +1,64 @@
+# Catppuccin-themed window borders
+client.focused          #89b4fa #1e1e2e #cdd6f4 #89b4fa   #89b4fa
+client.unfocused        #313244 #1e1e2e #a6adc8 #313244   #313244
+client.focused_inactive #313244 #1e1e2e #a6adc8 #313244   #313244
+
+
+set $mod Mod4
+
+input "type:keyboard" {
+    xkb_layout us
+    xkb_variant dvorak
+}
+
+output * bg #222222 solid_color
+
+set $ws1 "1:Code"
+set $ws2 "2:Help"
+set $ws3 "3:Communications"
+set $ws4 "4:Misc"
+
+# Command runner
+bindsym $mod+d exec wmenu-run
+
+# Terminal
+bindsym $mod+Return exec foot
+
+# Window management
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+e exit
+
+# Focus movement
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Workspaces
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+
+# Volume keys
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+bar {
+    swaybar_command waybar
+}
+
+exec mako
+
+exec swayidle -w \
+    timeout 300 'swaylock -f -c 000000' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -c 000000'
